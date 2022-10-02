@@ -2,11 +2,17 @@
 name = "sns_to_slack"
 version = "0.1.0"
 edition = "2021"
+default-run = "sns_to_slack"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "lambda-container"
+path = "src/bin/lambda-container.rs"
 
 [dependencies]
 tokio = { version = "1.21", features = ["full"] }
 reqwest = { version = "0.11", features = ["multipart"] }
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 envy = "0.3.3"
+lambda_runtime = "0.6.0"
+aws_lambda_events = "0.6.3"
