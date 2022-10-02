@@ -9,3 +9,6 @@ services:
       - ./docker/.gitconfig:/root/.gitconfig
     working_dir: /app
     tty: true
+    environment:
+      - SLACK_APP_TOKEN=${SLACK_APP_TOKEN}
+      - SLACK_DEFAULT_CHANNEL=${SLACK_DEFAULT_CHANNEL}
