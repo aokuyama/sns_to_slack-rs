@@ -15,6 +15,7 @@ async fn handle_sns(e: SnsEvent) -> Result<LambdaResult, Error> {
     let client = slack::Client::new();
     for record in e.records {
         let message = record.sns.message;
+        let subject = record.sns.subject;
         let channel = match record.sns.message_attributes.get("channel") {
             Some(attr) => Some(&attr.value),
             None => None,
@@ -23,7 +24,8 @@ async fn handle_sns(e: SnsEvent) -> Result<LambdaResult, Error> {
             Some(attr) => Some(&attr.value),
             None => None,
         };
-        client.send(&message, channel, app_token).await;
+        let msg = slack::Message::new(&message, subject, channel, app_token);
+        client.send(msg).await;
     }
     Ok(LambdaResult {})
 }

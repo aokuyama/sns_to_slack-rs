@@ -1,6 +1,6 @@
 use crate::slack::SlackResult;
 
-use super::{config::Config, Client};
+use super::{config::Config, Client, Message};
 
 impl Client {
     pub fn new() -> Self {
@@ -9,18 +9,13 @@ impl Client {
             client: reqwest::Client::new(),
         }
     }
-    pub async fn send<'a>(
-        &self,
-        message: &'a str,
-        channel: Option<&'a String>,
-        app_token: Option<&String>,
-    ) {
-        let app_token = self.config.app_token(app_token);
-        let channel = self.config.channel(channel);
+    pub async fn send<'a>(&self, message: Message<'_>) {
+        let app_token = self.config.app_token(message.app_token);
+        let channel = self.config.channel(message.channel);
 
         let form = reqwest::multipart::Form::new()
             .text("channel", channel.to_string())
-            .text("text", message.to_string());
+            .text("attachments", message.attachments());
 
         let res = self
             .client
