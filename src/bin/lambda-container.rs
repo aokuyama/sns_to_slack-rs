@@ -1,8 +1,6 @@
 use sns_to_slack::lambda_handler;
 
-use lambda_runtime::{
-    Error as LambdaError,
-};
+use lambda_runtime::Error as LambdaError;
 
 #[tokio::main]
 async fn main() -> Result<(), LambdaError> {

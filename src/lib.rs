@@ -1,13 +1,12 @@
-use serde::Serialize;
-use lambda_runtime::{LambdaEvent, Error};
 use aws_lambda_events::event::sns::SnsEvent;
+use lambda_runtime::{Error, LambdaEvent};
+use serde::Serialize;
 mod slack;
 
 #[derive(Debug, Serialize)]
-pub struct LambdaResult {
-}
+pub struct LambdaResult {}
 
-pub async fn lambda_handler(event: LambdaEvent<serde_json::Value>)  -> Result<LambdaResult, Error> {
+pub async fn lambda_handler(event: LambdaEvent<serde_json::Value>) -> Result<LambdaResult, Error> {
     let sns: SnsEvent = serde_json::from_str(&event.payload.to_string()).unwrap();
     handle_sns(sns).await
 }
@@ -26,5 +25,5 @@ async fn handle_sns(e: SnsEvent) -> Result<LambdaResult, Error> {
         };
         client.send(&message, channel, app_token).await;
     }
-    Ok(LambdaResult{})
+    Ok(LambdaResult {})
 }

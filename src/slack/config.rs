@@ -16,8 +16,8 @@ impl Config {
             Some(x) => x,
             None => match &self.slack_app_token {
                 Some(y) => &y,
-                None => panic!("undefined app token")
-            }
+                None => panic!("undefined app token"),
+            },
         }
     }
     pub fn channel<'a>(&'a self, channel: Option<&'a String>) -> &str {
@@ -25,8 +25,8 @@ impl Config {
             Some(x) => x,
             None => match &self.slack_default_channel {
                 Some(y) => &y,
-                None => panic!("undefined destination channel")
-            }
+                None => panic!("undefined destination channel"),
+            },
         }
     }
 }
