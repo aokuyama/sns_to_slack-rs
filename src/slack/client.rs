@@ -1,3 +1,5 @@
+use crate::slack::SlackResult;
+
 use super::{config::Config, Client};
 
 impl Client {
@@ -36,6 +38,15 @@ impl Client {
             .text()
             .await
             .expect("failed to get payload");
-        println!("{}", payload);
+        match serde_json::from_str::<SlackResult>(&payload) {
+            Ok(result) => match result.ok {
+                true => (),
+                false => panic!("{}", payload),
+            },
+            Err(err) => {
+                println!("{}", payload);
+                panic!("{}", err)
+            }
+        };
     }
 }
